@@ -5,6 +5,7 @@ import requests
 from fastapi import FastAPI
 
 from models import Course
+from models import Discussion
 
 # /api/v1/courses/:course_id/discussion_topics
 
@@ -22,9 +23,28 @@ headers: dict[str, str] = {
 
 
 @app.get("/courses")
-async def get_courses() -> Course:
+async def get_courses() -> list[Course]:
     response = requests.get(url=f"{base_url}/courses", headers=headers)
     r_json = response.json()
 
-    course = Course(id=r_json[0]["id"], name=r_json[0]["name"])
-    return course
+    courses: list[Course] = []
+    for course_json in r_json:
+        course = Course(id=course_json["id"], name=course_json["name"])
+        courses.append(course)
+
+    return courses
+
+
+@app.get("/discussions")
+async def get_discussions(course_id: int) -> list:
+    response = requests.get(
+        url=f"{base_url}/courses/{course_id}/discussion_topics", headers=headers)
+    r_json = response.json()
+
+    discussions: list[Discussion] = []
+    for discussion_json in r_json:
+        discussion = Discussion(
+            id=discussion_json["id"], title=discussion_json["title"])
+        discussions.append(discussion)
+
+    return discussions
