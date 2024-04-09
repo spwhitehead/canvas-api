@@ -16,4 +16,10 @@ headers: dict[str, str] = {
 }
 
 response = requests.get(url=f"{base_url}/courses", headers=headers)
-print(response.json())
+r_json = response.json()
+print()
+resp: dict = {
+    "id": r_json[0]["id"],
+    "name": r_json[0]["name"]
+}
+print(resp)
