@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from models import Course
 from models import Discussion
 from models import DiscussionEntry
+from models import Assignments
 
 # /api/v1/courses/:course_id/discussion_topics
 
@@ -55,5 +56,28 @@ async def get_discussions(course_id: int) -> list:
 async def create_discussion_entry(course_id: int, topic_id: int, body: DiscussionEntry):
     response = requests.post(url=f"{base_url}/courses/{course_id}/discussion_topics//{
                              topic_id}/entries", headers=headers, data=body.model_dump())
+    r_json = response.json()
+    return
+
+
+@app.get("/courses/{course_id}/assignments")
+async def get_assignments(course_id: int) -> list:
+    response = requests.get(
+        url=f"{base_url}/courses/{course_id}/assignments", headers=headers)
+    r_json = response.json()
+
+    assignments: list[Assignments] = []
+    for assignment_json in r_json:
+        assignment = Assignments(
+            id=assignment_json["id"], name=assignment_json["name"])
+        assignments.append(assignment)
+
+    return assignments
+
+
+@app.post("/courses/{course_id}/assignments/{assignment_id}/submit")
+async def submit_assignment(course_id: int, assignment_id: int, body: Assignments):
+    response = requests.post(url=f"{base_url}/courses/{course_id}/assignments/{
+                             assignment_id}/submit", headers=headers, data=body.model_dump())
     r_json = response.json()
     return

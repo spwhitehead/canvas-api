@@ -13,3 +13,8 @@ class Discussion(BaseModel):
 
 class DiscussionEntry(BaseModel):
     message: str
+
+
+class Assignments(BaseModel):
+    id: int
+    name: str
