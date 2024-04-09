@@ -6,6 +6,7 @@ from fastapi import FastAPI
 
 from models import Course
 from models import Discussion
+from models import DiscussionEntry
 
 # /api/v1/courses/:course_id/discussion_topics
 
@@ -48,3 +49,10 @@ async def get_discussions(course_id: int) -> list:
         discussions.append(discussion)
 
     return discussions
+
+
+@app.post("/discussions/entries")
+async def create_discussion_entry(course_id: int, topic_id: int, body: DiscussionEntry):
+    response = requests.post(url=f"{base_url}/courses/{course_id}/discussion_topics//{topic_id}/entries", headers=headers, data=body.model_dump())
+    r_json = response.json()
+    return
