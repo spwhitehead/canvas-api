@@ -17,7 +17,7 @@ def start_uvicorn():
 
 def open_browser():
     time.sleep(2)
-    webbrowser.open("localhost:8000/docs")
+    webbrowser.open("localhost:8004/docs")
 
 
 if __name__ == "__main__":

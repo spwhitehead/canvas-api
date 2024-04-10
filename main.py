@@ -64,7 +64,7 @@ async def create_discussion_entry(course_id: int, topic_id: int, body: Discussio
 
 
 @app.get("/courses/{course_id}/assignments/")
-async def get_assignments(course_id: int, page: int = Query(1, ge=1), per_page: int = Query(10, ge=1)) -> list[Assignments]:
+async def get_assignments(course_id: int, page: int = Query(1, ge=1), per_page: int = Query(50, ge=1)) -> list[Assignments]:
     url = f"{base_url}/courses/{course_id}/assignments"
     params = {"page": page, "per_page": per_page}
 
