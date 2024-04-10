@@ -79,9 +79,9 @@ async def get_assignments(course_id: int, page: int = Query(1, ge=1), per_page: 
     return assignments
 
 
-@app.post("/courses/{course_id}/assignments/{assignment_id}/submit")
+@app.post("/courses/{course_id}/assignments/{assignment_id}/submissions")
 async def submit_assignment(course_id: int, assignment_id: int, body: Assignments):
     response = requests.post(url=f"{base_url}/courses/{course_id}/assignments/{
-                             assignment_id}/submit", headers=headers, data=body.model_dump())
+                             assignment_id}/submissions", headers=headers, data=body.model_dump())
     r_json = response.json()
-    return
+    return "Assignment Submitted Successfully"
