@@ -1,7 +1,5 @@
-import os
 import subprocess
-import sys
-import webbrowser
+import threading
 import time
 
 
@@ -17,9 +15,14 @@ def start_uvicorn():
 
 def open_browser():
     time.sleep(2)
-    webbrowser.open("localhost:8004/docs")
+    print("Opening Localhost in Chrome...")
+    try:
+        subprocess.run(["open", "-a", "Google Chrome",
+                       "http://localhost:8004/docs"])
+    except Exception as e:
+        print(f"Could not open Chrome: {e}")
 
 
 if __name__ == "__main__":
+    threading.Thread(target=open_browser).start()
     start_uvicorn()
-    open_browser()
