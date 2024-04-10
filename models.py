@@ -18,3 +18,8 @@ class DiscussionEntry(BaseModel):
 class Assignments(BaseModel):
     id: int
     name: str
+
+
+class Submission(BaseModel):
+    url: str
+    comment: str

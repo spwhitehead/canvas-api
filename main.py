@@ -10,6 +10,7 @@ from models import Course
 from models import Discussion
 from models import DiscussionEntry
 from models import Assignments
+from models import Submission
 
 # /api/v1/courses/:course_id/discussion_topics
 
@@ -80,8 +81,13 @@ async def get_assignments(course_id: int, page: int = Query(1, ge=1), per_page: 
 
 
 @app.post("/courses/{course_id}/assignments/{assignment_id}/submissions")
-async def submit_assignment(course_id: int, assignment_id: int, body: Assignments):
+async def submit_assignment(course_id: int, assignment_id: int, submission: Submission):
+    submission_data = {
+        "submission[submission_type]": "online_url",
+        "comment[text_comment]": submission.comment,
+        "submission[url]": submission.url
+    }
     response = requests.post(url=f"{base_url}/courses/{course_id}/assignments/{
-                             assignment_id}/submissions", headers=headers, data=body.model_dump())
+                             assignment_id}/submissions", headers=headers, data=submission_data)
     r_json = response.json()
     return "Assignment Submitted Successfully"
