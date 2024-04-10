@@ -1,10 +1,18 @@
+import os
 import subprocess
+import sys
 import webbrowser
 import time
 
 
 def start_uvicorn():
-    subprocess.Popen(["uvicorn", "main:app", "--reload", "--port", "8004"])
+    uvicorn_process = subprocess.Popen(
+        ["uvicorn", "main:app", "--reload", "--port", "8004"])
+    try:
+        uvicorn_process.wait()
+    except KeyboardInterrupt:
+        print("\n Stopping Uvicorn server...")
+        uvicorn_process.terminate()
 
 
 def open_browser():
