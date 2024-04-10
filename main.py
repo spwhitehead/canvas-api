@@ -2,7 +2,9 @@ import os
 
 from dotenv import load_dotenv
 import requests
-from fastapi import FastAPI
+
+from typing import List
+from fastapi import FastAPI, Query
 
 from models import Course
 from models import Discussion
@@ -60,13 +62,15 @@ async def create_discussion_entry(course_id: int, topic_id: int, body: Discussio
     return
 
 
-@app.get("/courses/{course_id}/assignments")
-async def get_assignments(course_id: int) -> list:
-    response = requests.get(
-        url=f"{base_url}/courses/{course_id}/assignments", headers=headers)
+@app.get("/courses/{course_id}/assignments/")
+async def get_assignments(course_id: int, page: int = Query(1, ge=1), per_page: int = Query(10, ge=1)) -> list[Assignments]:
+    url = f"{base_url}/courses/{course_id}/assignments"
+    params = {"page": page, "per_page": per_page}
+
+    response = requests.get(url, params=params, headers=headers)
     r_json = response.json()
 
-    assignments: list[Assignments] = []
+    assignments: List[Assignments] = []
     for assignment_json in r_json:
         assignment = Assignments(
             id=assignment_json["id"], name=assignment_json["name"])
