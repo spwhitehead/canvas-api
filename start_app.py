@@ -1,3 +1,5 @@
+#! /Users/spencerwhitehead/Desktop/Code/api_learning/canvas-api/.venv/bin/python3
+
 import subprocess
 import threading
 import time
